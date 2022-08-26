@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
+import axios from "axios";
 import { Input } from "baseui/input";
 import { Textarea } from "baseui/textarea";
 import { Button, KIND } from "baseui/button";
@@ -26,10 +27,10 @@ function Form() {
     return navigate("/");
   }
 
-  function handleSubmitForm(e) {
+  async function handleSubmitForm(e) {
     e.preventDefault();
     let post = {
-      userId: "wedeTfRdP",
+      userId: "sampleuserid",
       postId: uid(),
       title: title,
       dateCreated: new Date().getTime(),
@@ -37,7 +38,8 @@ function Form() {
       description: description,
     };
 
-    console.log(post);
+    // communicate to BENBLOG-SERVER-RNES
+    var response = await axios.post("http://localhost:5000/post/create", post);
   }
 
   return (

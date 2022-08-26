@@ -5,8 +5,8 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 
 // Pages
 import Home from "./pages/home";
-import Post from "./pages/post";
-import Create from "./pages/create";
+import ShowPost from "./pages/showPost";
+import CreatePost from "./pages/createPost";
 import Login from "./pages/login";
 import Register from "./pages/register";
 
@@ -20,8 +20,8 @@ function App() {
         <PostCardContextProvider>
           <Routes>
             <Route exact path="/" element={<Home />} />
-            <Route exact path="/post/:id" element={<Post />} />
-            <Route exact path="/post/create" element={<Create />} />
+            <Route exact path="/post/:id" element={<ShowPost />} />
+            <Route exact path="/post/create" element={<CreatePost />} />
             <Route exact path="/login" element={<Login />} />
             <Route exact path="/register" element={<Register />} />
           </Routes>

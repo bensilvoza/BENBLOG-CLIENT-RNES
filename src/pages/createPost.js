@@ -3,12 +3,12 @@ import { Grid, Cell } from "baseui/layout-grid";
 
 // components
 import Spacer from "../components/shared/spacer";
-import Form from "../components/create/form";
+import Form from "../components/createPost/form";
 
 // utils
 import gridJustifyContentCenter from "../utils/shared/gridJustifyContentCenter";
 
-function Create() {
+function CreatePost() {
   return (
     <Grid overrides={gridJustifyContentCenter}>
       <Cell span={6}>
@@ -21,4 +21,4 @@ function Create() {
   );
 }
 
-export default Create;
+export default CreatePost;

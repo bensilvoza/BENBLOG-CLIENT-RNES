@@ -5,7 +5,7 @@ import { Grid, Cell } from "baseui/layout-grid";
 
 // components
 import Spacer from "../components/shared/spacer";
-import Card from "../components/post/card";
+import Card from "../components/showPost/card";
 
 // utils
 import gridJustifyContentCenter from "../utils/shared/gridJustifyContentCenter";
@@ -13,7 +13,7 @@ import gridJustifyContentCenter from "../utils/shared/gridJustifyContentCenter";
 // test
 import posts from "../test/posts";
 
-function Post() {
+function ShowPost() {
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -52,4 +52,4 @@ function Post() {
   );
 }
 
-export default Post;
+export default ShowPost;
