@@ -1,8 +1,12 @@
 // libraries
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { Input } from "baseui/input";
 import { Button, KIND } from "baseui/button";
+
+// contexts
+import { NotificationContext } from "../../contexts/shared/notificationContext";
 
 // components
 import Spacer from "../shared/spacer";
@@ -13,6 +17,9 @@ import uid from "../../utils/shared/uid";
 function Form() {
   const navigate = useNavigate();
 
+  // contexts
+  let { handleNotification } = useContext(NotificationContext);
+
   let [name, setName] = useState("");
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
@@ -22,23 +29,58 @@ function Form() {
     return navigate("/login");
   }
 
-  function handleSubmitForm(e) {
+  async function handleSubmitForm(e) {
     e.preventDefault();
-    // let post = {
-    //   userId: "wedeTfRdP",
-    //   postId: uid(),
-    //   title: title,
-    //   dateCreated: new Date().getTime(),
-    //   readTime: Number(readTimeValue[0]["id"]),
-    //   description: description,
-    // };
+    let user = {
+      userId: uid(),
+      name: name,
+      email: email,
+      password: password,
+    };
 
-    // console.log(post);
+    if (password != confirmPassword) {
+      handleNotification("Passwords do not match", "darkred");
+
+      setTimeout(function () {
+        return handleNotification(undefined, undefined);
+      }, 5000);
+
+      return;
+    }
+
+    // communicate to BENBLOG-SERVER-RNES
+    let response = await axios.post("http://localhost:5000/register", user);
+
+    if (response["data"]["message"] == "OK") {
+      // reset state
+      setName("");
+      setEmail("");
+      setConfirmPassword("");
+      setPassword("");
+
+      handleNotification("Registered successfully", "darkgreen");
+      setTimeout(function () {
+        return handleNotification(undefined, undefined);
+      }, 5000);
+    } else if (response["data"]["message"] == "nameAlreadyExist") {
+      handleNotification("Name already exist", "darkred");
+      setTimeout(function () {
+        return handleNotification(undefined, undefined);
+      }, 5000);
+    } else {
+      handleNotification("Something went wrong", "darkred");
+      setTimeout(function () {
+        return handleNotification(undefined, undefined);
+      }, 5000);
+    }
+
+    return;
   }
 
   return (
     <form onSubmit={handleSubmitForm}>
       <Input
+        required
         value={name}
         onChange={(e) => setName(e.target.value)}
         placeholder="name"
@@ -47,6 +89,7 @@ function Form() {
       <Spacer height="1rem" />
 
       <Input
+        required
         value={email}
         type="email"
         onChange={(e) => setEmail(e.target.value)}
@@ -56,6 +99,7 @@ function Form() {
       <Spacer height="1rem" />
 
       <Input
+        required
         value={password}
         type="password"
         onChange={(e) => setPassword(e.target.value)}
@@ -65,6 +109,7 @@ function Form() {
       <Spacer height="1rem" />
 
       <Input
+        required
         value={confirmPassword}
         type="password"
         onChange={(e) => setConfirmPassword(e.target.value)}

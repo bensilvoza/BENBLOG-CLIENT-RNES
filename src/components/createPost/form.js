@@ -1,5 +1,5 @@
 // libraries
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import axios from "axios";
@@ -7,6 +7,9 @@ import { Input } from "baseui/input";
 import { Textarea } from "baseui/textarea";
 import { Button, KIND } from "baseui/button";
 import { Select } from "baseui/select";
+
+// contexts
+import { UserContext } from "../../contexts/shared/userContext";
 
 // components
 import Spacer from "../shared/spacer";
@@ -17,6 +20,9 @@ import uid from "../../utils/shared/uid";
 
 function Form() {
   const navigate = useNavigate();
+
+  // contexts
+  let { userData } = useContext(UserContext);
 
   let [title, setTitle] = useState("");
   let [readTimeValue, setReadTimeValue] = useState([]);
@@ -29,17 +35,35 @@ function Form() {
 
   async function handleSubmitForm(e) {
     e.preventDefault();
+
     let post = {
-      userId: "sampleuserid",
+      userId: userData["userId"],
       postId: uid(),
       title: title,
-      dateCreated: new Date().getTime(),
       readTime: Number(readTimeValue[0]["id"]),
       description: description,
     };
 
     // communicate to BENBLOG-SERVER-RNES
-    var response = await axios.post("http://localhost:5000/post/create", post);
+
+    // JWT
+    let token = JSON.parse(localStorage.getItem("jwt"));
+
+    let config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+    };
+
+    let response = await axios.post(
+      "http://localhost:5000/post/create",
+      post,
+      config
+    );
+
+    console.log(response);
+    return;
   }
 
   return (

@@ -1,8 +1,13 @@
 // libraries
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { Input } from "baseui/input";
 import { Button, KIND } from "baseui/button";
+
+// contexts
+import { NotificationContext } from "../../contexts/shared/notificationContext";
+import { UserContext } from "../../contexts/shared/userContext";
 
 // components
 import Spacer from "../shared/spacer";
@@ -13,32 +18,59 @@ import uid from "../../utils/shared/uid";
 function Form() {
   const navigate = useNavigate();
 
-  let [name, setName] = useState("");
-  let [email, setEmail] = useState("");
-  let [password, setPassword] = useState("");
-  let [confirmPassword, setConfirmPassword] = useState("");
+  // contexts
+  let { handleNotification } = useContext(NotificationContext);
+  let { handleUserData } = useContext(UserContext);
 
-  function handleClickLogIn() {
-    return navigate("/login");
+  let [name, setName] = useState("");
+  let [password, setPassword] = useState("");
+
+  function handleClickRegister() {
+    return navigate("/register");
   }
 
-  function handleSubmitForm(e) {
+  async function handleSubmitForm(e) {
     e.preventDefault();
-    // let post = {
-    //   userId: "wedeTfRdP",
-    //   postId: uid(),
-    //   title: title,
-    //   dateCreated: new Date().getTime(),
-    //   readTime: Number(readTimeValue[0]["id"]),
-    //   description: description,
-    // };
+    let user = {
+      name: name,
+      password: password,
+    };
 
-    // console.log(post);
+    // communicate to BENBLOG-SERVER-RNES
+    let response = await axios.post("http://localhost:5000/login", user);
+
+    if (response["data"]["message"] == "ERROR") {
+      handleNotification("Incorrect credentials", "darkred");
+      setTimeout(function () {
+        return handleNotification(undefined, undefined);
+      }, 5000);
+    } else {
+      // save JWT to localStorage
+      localStorage.setItem(
+        "jwt",
+        JSON.stringify(`Bearer ${response["data"]["token"]}`)
+      );
+
+      // update user context
+      handleUserData(response["data"]["user"]);
+
+      // reset state
+      setName("");
+      setPassword("");
+
+      handleNotification("Logged in successfully", "darkgreen");
+      setTimeout(function () {
+        return handleNotification(undefined, undefined);
+      }, 5000);
+    }
+
+    return;
   }
 
   return (
     <form onSubmit={handleSubmitForm}>
       <Input
+        required
         value={name}
         onChange={(e) => setName(e.target.value)}
         placeholder="name"
@@ -47,6 +79,7 @@ function Form() {
       <Spacer height="1rem" />
 
       <Input
+        required
         value={password}
         type="password"
         onChange={(e) => setPassword(e.target.value)}
@@ -79,7 +112,7 @@ function Form() {
           },
         }}
         kind={KIND.secondary}
-        onClick={handleClickLogIn}
+        onClick={handleClickRegister}
       >
         REGISTER
       </Button>

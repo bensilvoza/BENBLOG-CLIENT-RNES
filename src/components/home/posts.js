@@ -16,9 +16,9 @@ import posts from "../../test/posts";
 
 function Posts() {
   // contexts
-  var { currentPostId } = useContext(PostCardContext);
+  let { currentPostId } = useContext(PostCardContext);
 
-  var postsCopy = [...posts];
+  let postsCopy = [...posts];
 
   return (
     <>
