@@ -1,4 +1,16 @@
+// libraries
+import { useContext } from "react";
+
+// contexts
+import { UserContext } from "../../contexts/shared/userContext";
+
+// components
+import EditAndDeleteButton from "./editAndDeleteButton";
+
 function Card(props) {
+  // contexts
+  let { userData } = useContext(UserContext);
+
   return (
     <>
       <h1
@@ -25,7 +37,10 @@ function Card(props) {
           {props["readTime"]} ☕️ min read
         </p>
       </div>
-      <p>{props["description"]}</p>
+      {userData != undefined && userData["userId"] == props["userId"] && (
+        <EditAndDeleteButton />
+      )}
+      <p style={{ marginTop: ".5rem" }}>{props["description"]}</p>
     </>
   );
 }

@@ -10,6 +10,8 @@ import { Select } from "baseui/select";
 
 // contexts
 import { UserContext } from "../../contexts/shared/userContext";
+import { NotificationContext } from "../../contexts/shared/notificationContext";
+import { PostsContext } from "../../contexts/shared/postsContext";
 
 // components
 import Spacer from "../shared/spacer";
@@ -23,11 +25,13 @@ function Form() {
 
   // contexts
   let { userData } = useContext(UserContext);
+  let { handleNotification } = useContext(NotificationContext);
+  let { postsData, handlePostsData } = useContext(PostsContext);
 
   let [title, setTitle] = useState("");
+  let [date, setDate] = useState(moment().format("ll"));
   let [readTimeValue, setReadTimeValue] = useState([]);
   let [description, setDescription] = useState("");
-  let date = moment().format("ll");
 
   function handleClickCancel() {
     return navigate("/");
@@ -36,10 +40,21 @@ function Form() {
   async function handleSubmitForm(e) {
     e.preventDefault();
 
+    // All fields required
+    if (title == "" || readTimeValue.length == 0 || description == "") {
+      handleNotification("Please fill out all fields", "darkred");
+      setTimeout(function () {
+        return handleNotification(undefined, undefined);
+      }, 5000);
+
+      return;
+    }
+
     let post = {
       userId: userData["userId"],
       postId: uid(),
       title: title,
+      dateCreated: date,
       readTime: Number(readTimeValue[0]["id"]),
       description: description,
     };
@@ -62,7 +77,22 @@ function Form() {
       config
     );
 
-    console.log(response);
+    if (response["data"]["message"] == "OK") {
+      // reset state
+      setTitle("");
+      setReadTimeValue([]);
+      setDescription("");
+
+      handleNotification("Post created!", "darkgreen");
+      setTimeout(function () {
+        return handleNotification(undefined, undefined);
+      }, 5000);
+
+      // update posts context
+      var postsDataCopy = [...postsData];
+      postsDataCopy.push(post);
+      handlePostsData(postsDataCopy);
+    }
     return;
   }
 
@@ -92,7 +122,7 @@ function Form() {
                 { id: "20", value: "20 min read" },
               ]}
               searchable={false}
-              placeholder="Choose time..."
+              placeholder="reading time"
               labelKey="value"
               valueKey="value"
               onChange={(params) => setReadTimeValue(params.value)}

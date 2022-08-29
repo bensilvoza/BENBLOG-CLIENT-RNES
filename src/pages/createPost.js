@@ -10,6 +10,7 @@ import { NotificationContext } from "../contexts/shared/notificationContext";
 // components
 import Spacer from "../components/shared/spacer";
 import Form from "../components/createPost/form";
+import TopCenterNotification from "../components/shared/topCenterNotification";
 
 // utils
 import gridJustifyContentCenter from "../utils/shared/gridJustifyContentCenter";
@@ -19,7 +20,8 @@ function CreatePost() {
 
   // contexts
   let { userData } = useContext(UserContext);
-  let { handleNotification } = useContext(NotificationContext);
+  let { handleNotification, notificationMessage, notificationColor } =
+    useContext(NotificationContext);
 
   useEffect(function () {
     if (userData == undefined) {
@@ -33,14 +35,22 @@ function CreatePost() {
   }, []);
 
   return (
-    <Grid overrides={gridJustifyContentCenter}>
-      <Cell span={6}>
-        <Spacer height="4rem" />
-        <h1 style={{ fontWeight: "900" }}>Create</h1>
-        <Spacer height="1rem" />
-        <Form />
-      </Cell>
-    </Grid>
+    <>
+      {notificationMessage != undefined && (
+        <TopCenterNotification
+          message={notificationMessage}
+          color={notificationColor}
+        />
+      )}
+      <Grid overrides={gridJustifyContentCenter}>
+        <Cell span={6}>
+          <Spacer height="4rem" />
+          <h1 style={{ fontWeight: "900" }}>Create Post</h1>
+          <Spacer height="1rem" />
+          <Form />
+        </Cell>
+      </Grid>
+    </>
   );
 }
 

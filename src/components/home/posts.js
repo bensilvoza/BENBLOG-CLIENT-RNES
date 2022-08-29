@@ -1,8 +1,9 @@
 // libraries
-import { useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 
 // contexts
 import { PostCardContext } from "../../contexts/home/postCardContext";
+import { PostsContext } from "../../contexts/shared/postsContext";
 
 // components
 import Card from "./card";
@@ -11,14 +12,22 @@ import Spacer from "../shared/spacer";
 // utils
 import cardStyle from "../../utils/home/cardStyle";
 
-// test
-import posts from "../../test/posts";
-
 function Posts() {
   // contexts
   let { currentPostId } = useContext(PostCardContext);
+  let { postsData } = useContext(PostsContext);
 
-  let postsCopy = [...posts];
+  let [postsCopy, setPostsCopy] = useState([]);
+
+  useEffect(function () {
+    if (postsCopy.length == 0) {
+      if (postsData != undefined) {
+        setPostsCopy([...postsData]);
+      }
+    }
+
+    return;
+  });
 
   return (
     <>

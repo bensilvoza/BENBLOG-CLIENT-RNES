@@ -1,21 +1,28 @@
 // libraries
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Grid, Cell } from "baseui/layout-grid";
+
+// contexts
+import { PostsContext } from "../contexts/shared/postsContext";
+import { NotificationContext } from "../contexts/shared/notificationContext";
 
 // components
 import Spacer from "../components/shared/spacer";
 import Card from "../components/showPost/card";
+import TopCenterNotification from "../components/shared/topCenterNotification";
 
 // utils
 import gridJustifyContentCenter from "../utils/shared/gridJustifyContentCenter";
 
-// test
-import posts from "../test/posts";
-
 function ShowPost() {
   const navigate = useNavigate();
   const { id } = useParams();
+
+  // contexts
+  let { postsData } = useContext(PostsContext);
+  let { notificationMessage, notificationColor } =
+    useContext(NotificationContext);
 
   let [post, setPost] = useState({});
 
@@ -24,31 +31,45 @@ function ShowPost() {
   }
 
   useEffect(function () {
-    setPost(posts[id - 1]);
-    return;
+    for (var i = 0; i < postsData.length; i++) {
+      if (postsData[i]["postId"] == id) {
+        setPost(postsData[i]);
+        return;
+      }
+    }
   }, []);
 
   return (
-    <Grid overrides={gridJustifyContentCenter}>
-      <Cell span={6}>
-        <Spacer height="1rem" />
-        <div
-          style={{ fontSize: "1.5rem", cursor: "pointer", color: "gray" }}
-          onClick={handleClickBackArrow}
-        >
-          <i className="bi bi-arrow-left"></i>
-        </div>
-        <Spacer height="4rem" />
-        <Card
-          title={post["title"]}
-          dateCreated={post["dateCreated"]}
-          readTime={post["readTime"]}
-          description={post["description"]}
+    <>
+      {notificationMessage != undefined && (
+        <TopCenterNotification
+          message={notificationMessage}
+          color={notificationColor}
         />
+      )}
 
-        <Spacer height="1rem" />
-      </Cell>
-    </Grid>
+      <Grid overrides={gridJustifyContentCenter}>
+        <Cell span={6}>
+          <Spacer height="1rem" />
+          <div
+            style={{ fontSize: "1.5rem", cursor: "pointer", color: "gray" }}
+            onClick={handleClickBackArrow}
+          >
+            <i className="bi bi-arrow-left"></i>
+          </div>
+          <Spacer height="4rem" />
+          <Card
+            title={post["title"]}
+            dateCreated={post["dateCreated"]}
+            readTime={post["readTime"]}
+            description={post["description"]}
+            userId={post["userId"]}
+          />
+
+          <Spacer height="1rem" />
+        </Cell>
+      </Grid>
+    </>
   );
 }
 
