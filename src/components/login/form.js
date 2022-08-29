@@ -59,6 +59,9 @@ function Form() {
       setTimeout(function () {
         return handleNotification(undefined, undefined);
       }, 5000);
+
+      // redirect to homepage
+      navigate("/");
     }
 
     return;

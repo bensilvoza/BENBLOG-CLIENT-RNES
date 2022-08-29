@@ -11,6 +11,7 @@ import { NotificationContext } from "../../contexts/shared/notificationContext";
 import Spacer from "../../components/shared/spacer";
 import Card from "../../components/post/showPost/card";
 import TopCenterNotification from "../../components/shared/topCenterNotification";
+import CommentSection from "../../components/post/showPost/commentSection";
 
 // utils
 import gridJustifyContentCenter from "../../utils/shared/gridJustifyContentCenter";
@@ -66,6 +67,8 @@ function ShowPost() {
             userId={post["userId"]}
           />
 
+          <Spacer height="4rem" />
+          <CommentSection />
           <Spacer height="1rem" />
         </Cell>
       </Grid>
