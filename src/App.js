@@ -5,9 +5,9 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 
 // Pages
 import Home from "./pages/home";
-import ShowPost from "./pages/showPost";
-import CreatePost from "./pages/createPost";
-import EditPost from "./pages/editPost";
+import ShowPost from "./pages/post/showPost";
+import CreatePost from "./pages/post/createPost";
+import EditPost from "./pages/post/editPost";
 import Login from "./pages/login";
 import Register from "./pages/register";
 

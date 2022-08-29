@@ -9,12 +9,12 @@ import { Button, KIND } from "baseui/button";
 import { Select } from "baseui/select";
 
 // contexts
-import { NotificationContext } from "../../contexts/shared/notificationContext";
-import { PostsContext } from "../../contexts/shared/postsContext";
+import { NotificationContext } from "../../../contexts/shared/notificationContext";
+import { PostsContext } from "../../../contexts/shared/postsContext";
 
 // components
-import Spacer from "../shared/spacer";
-import WidthSpacer from "../shared/widthSpacer";
+import Spacer from "../../shared/spacer";
+import WidthSpacer from "../../shared/widthSpacer";
 
 function Form() {
   const navigate = useNavigate();
@@ -76,7 +76,7 @@ function Form() {
     );
 
     if (response["data"]["message"] == "OK") {
-      handleNotification("Post updated!", "darkgreen");
+      handleNotification("Post updated", "darkgreen");
       setTimeout(function () {
         return handleNotification(undefined, undefined);
       }, 5000);

@@ -12,9 +12,6 @@ import { UserContext } from "../../contexts/shared/userContext";
 // components
 import Spacer from "../shared/spacer";
 
-// utils
-import uid from "../../utils/shared/uid";
-
 function Form() {
   const navigate = useNavigate();
 

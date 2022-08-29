@@ -9,16 +9,16 @@ import { Button, KIND } from "baseui/button";
 import { Select } from "baseui/select";
 
 // contexts
-import { UserContext } from "../../contexts/shared/userContext";
-import { NotificationContext } from "../../contexts/shared/notificationContext";
-import { PostsContext } from "../../contexts/shared/postsContext";
+import { UserContext } from "../../../contexts/shared/userContext";
+import { NotificationContext } from "../../../contexts/shared/notificationContext";
+import { PostsContext } from "../../../contexts/shared/postsContext";
 
 // components
-import Spacer from "../shared/spacer";
-import WidthSpacer from "../shared/widthSpacer";
+import Spacer from "../../shared/spacer";
+import WidthSpacer from "../../shared/widthSpacer";
 
 // utils
-import uid from "../../utils/shared/uid";
+import uid from "../../../utils/shared/uid";
 
 function Form() {
   const navigate = useNavigate();

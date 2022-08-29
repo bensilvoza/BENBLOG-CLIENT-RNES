@@ -4,16 +4,16 @@ import { useNavigate } from "react-router-dom";
 import { Grid, Cell } from "baseui/layout-grid";
 
 // contexts
-import { UserContext } from "../contexts/shared/userContext";
-import { NotificationContext } from "../contexts/shared/notificationContext";
+import { UserContext } from "../../contexts/shared/userContext";
+import { NotificationContext } from "../../contexts/shared/notificationContext";
 
 // components
-import Spacer from "../components/shared/spacer";
-import Form from "../components/createPost/form";
-import TopCenterNotification from "../components/shared/topCenterNotification";
+import Spacer from "../../components/shared/spacer";
+import Form from "../../components/post/createPost/form";
+import TopCenterNotification from "../../components/shared/topCenterNotification";
 
 // utils
-import gridJustifyContentCenter from "../utils/shared/gridJustifyContentCenter";
+import gridJustifyContentCenter from "../../utils/shared/gridJustifyContentCenter";
 
 function CreatePost() {
   const navigate = useNavigate();

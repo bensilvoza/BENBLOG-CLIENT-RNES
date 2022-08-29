@@ -2,7 +2,7 @@
 import { useContext } from "react";
 
 // contexts
-import { UserContext } from "../../contexts/shared/userContext";
+import { UserContext } from "../../../contexts/shared/userContext";
 
 // components
 import EditAndDeleteButton from "./editAndDeleteButton";

@@ -4,16 +4,16 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Grid, Cell } from "baseui/layout-grid";
 
 // contexts
-import { PostsContext } from "../contexts/shared/postsContext";
-import { NotificationContext } from "../contexts/shared/notificationContext";
+import { PostsContext } from "../../contexts/shared/postsContext";
+import { NotificationContext } from "../../contexts/shared/notificationContext";
 
 // components
-import Spacer from "../components/shared/spacer";
-import Card from "../components/showPost/card";
-import TopCenterNotification from "../components/shared/topCenterNotification";
+import Spacer from "../../components/shared/spacer";
+import Card from "../../components/post/showPost/card";
+import TopCenterNotification from "../../components/shared/topCenterNotification";
 
 // utils
-import gridJustifyContentCenter from "../utils/shared/gridJustifyContentCenter";
+import gridJustifyContentCenter from "../../utils/shared/gridJustifyContentCenter";
 
 function ShowPost() {
   const navigate = useNavigate();

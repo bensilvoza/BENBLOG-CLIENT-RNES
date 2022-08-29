@@ -2,11 +2,11 @@
 import { Grid, Cell } from "baseui/layout-grid";
 
 // components
-import Spacer from "../components/shared/spacer";
-import Form from "../components/editPost/form";
+import Spacer from "../../components/shared/spacer";
+import Form from "../../components/post/editPost/form";
 
 // utils
-import gridJustifyContentCenter from "../utils/shared/gridJustifyContentCenter";
+import gridJustifyContentCenter from "../../utils/shared/gridJustifyContentCenter";
 
 function EditPost() {
   return (

@@ -5,11 +5,11 @@ import axios from "axios";
 import { Button, SIZE, KIND } from "baseui/button";
 
 // contexts
-import { PostsContext } from "../../contexts/shared/postsContext";
-import { NotificationContext } from "../../contexts/shared/notificationContext";
+import { PostsContext } from "../../../contexts/shared/postsContext";
+import { NotificationContext } from "../../../contexts/shared/notificationContext";
 
 // components
-import WidthSpacer from "../shared/widthSpacer";
+import WidthSpacer from "../../shared/widthSpacer";
 
 function EditAndDeleteButton() {
   const navigate = useNavigate();
