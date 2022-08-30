@@ -22,7 +22,7 @@ function CommentSection(props) {
   // decodedTree will lool like these --> [{}, {}, {}, {}]
   let [decodedTree, setDecodedTree] = useState([]);
   let [rootComment, setRootComment] = useState("");
-  let [childComment, setChildComment] = useState("");
+  let childComment;
 
   function handleClickReplyButton(id) {
     // if there's another comment box,
@@ -42,8 +42,8 @@ function CommentSection(props) {
     // traverse decodedTree to get indentCount of parent node
     for (let i = 0; i < decodedTreeCopy.length; i++) {
       if (decodedTreeCopy[i]["id"] == id) {
-        node["indentCount"] = tree[i]["indentCount"] + 1;
-        node["author"] = tree[i]["author"];
+        node["indentCount"] = decodedTreeCopy[i]["indentCount"] + 1;
+        node["author"] = decodedTreeCopy[i]["author"];
 
         // At position i+1, add node
         decodedTreeCopy.splice(i + 1, 0, node);
@@ -82,15 +82,36 @@ function CommentSection(props) {
             treeCopy[i]["children"].push(node);
             break;
           }
-
-          // continue here ...
         }
 
         break;
       }
     }
 
-    // decode tree when node contains children................................
+    console.log("...");
+
+    return;
+
+    // decode tree or traverse tree
+    // DFS
+
+    // [{children:[{}]}, {}, {}]
+
+    let decodedTreeCopy = [];
+    function dfs(tree, index) {
+      let node = tree[index];
+
+      // delete children for decodedTree remain flat
+      delete node["children"];
+
+      decodedTreeCopy.push(node);
+
+      tree = tree[index]["children"];
+
+      dfs(tree, index);
+    }
+    // call
+    // dfs(tree, 0);
   }
 
   // root comment form
@@ -111,7 +132,9 @@ function CommentSection(props) {
     // create a copy and save to tree
     let nodeCopy = node;
     nodeCopy["children"] = [];
-    setTree(nodeCopy);
+    let treeCopy = [...tree];
+    treeCopy.push(node);
+    setTree(treeCopy);
 
     // update decodedTree
     setDecodedTree(decodedTreeCopy);
@@ -123,6 +146,13 @@ function CommentSection(props) {
     <>
       <form onSubmit={handleSubmitForm}>
         <Input
+          overrides={{
+            Input: {
+              style: {
+                backgroundColor: "white",
+              },
+            },
+          }}
           value={rootComment}
           onChange={(e) => setRootComment(e.target.value)}
           placeholder="Write a comment..."
@@ -131,7 +161,7 @@ function CommentSection(props) {
 
       <Spacer height="1rem" />
 
-      {tree.map((node) => (
+      {decodedTree.map((node) => (
         <div
           style={{ paddingLeft: `${node["indentCount"]}rem` }}
           key={node["id"] != undefined ? node["id"] : uid()}
@@ -166,8 +196,7 @@ function CommentSection(props) {
           ) : (
             <form onSubmit={handleSubmitChildForm}>
               <Input
-                value={childComment}
-                onChange={(e) => setChildComment(e.target.value)}
+                onChange={(e) => (childComment = e.target.value)}
                 placeholder={"Reply to " + node["author"] + "..."}
               />
             </form>
